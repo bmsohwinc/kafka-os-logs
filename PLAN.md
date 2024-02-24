@@ -1,8 +1,9 @@
-- [ ] Phase 1: Explore OS logs
-    - [ ] Read and understand OS Process logs
-    - [ ] Check how to process the logs
-    - [ ] Check what metrics can be captured
-    - [ ] Check what additional data can be captured
+- [x] Phase 1: Explore OS logs
+    - [x] Read and understand OS Process logs
+    - [x] Check how to process the logs
+    - [x] Check what metrics can be captured
+    - [x] Check what additional data can be captured
+    - Observations recorded in **README.md** under *Project scope*
 
 - [ ] Phase 2: Capture OS logs in Java
     - [ ] Check if File reading can be used to capture logs

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/kos")
 public class KOSController {
-    
+
     @GetMapping("/")
     public String hello() {
         return "It's KOS!";
