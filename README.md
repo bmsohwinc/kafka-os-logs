@@ -10,15 +10,15 @@
 ```
 4. Project scope is to setup Kafka pipeline and enable Spark analysis, hence detailed metrics are not captured from syslog
 5. The metrics that we will be analyzing:
-    a. Most frequent service
-    b. Most frequent daemon/process
-    c. Number of processes started/activated at a given time
+    1. Most frequent service
+    2. Most frequent daemon/process
+    3. Number of processes started/activated at a given time
 6. The fields that we'll capture to enable the above analyses:
-    a. Date and Time
-    b. Username
-    c. Process name
-    d. Process ID
-    e. Service name
+    1. Date and Time
+    2. Username
+    3. Process name
+    4. Process ID
+    5. Service name
 
 
 ## Run as
