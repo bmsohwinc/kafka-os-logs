@@ -13,18 +13,18 @@ public class KOSService {
 
     @Value("${syslog.path}")
     private String syslogPath;
-    
+
     public String readSysLogs() throws IOException {
         StringBuilder fileContent = new StringBuilder();
         try (InputStream iStream = getClass().getClassLoader().getResourceAsStream(syslogPath);
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    fileContent.append(line).append("\n");
-                }
+                BufferedReader br = new BufferedReader(new InputStreamReader(iStream))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                fileContent.append(line).append("\n");
             }
+        }
         System.out.println(fileContent.toString());
         return "OK";
     }
-    
+
 }
