@@ -3,10 +3,10 @@
     - [x] Check how to process the logs
     - [x] Check what metrics can be captured
     - [x] Check what additional data can be captured
-    - Observations recorded in **README.md** under *Project scope*
+    - [x] Observations recorded in **README.md** under *Project scope*
 
 - [ ] Phase 2: Capture OS logs in Java
-    - [ ] Check if File reading can be used to capture logs
+    - [x] Check if File reading can be used to capture logs
     - [ ] Check how to parse the logs
 
 - [ ] Phase 3: Store OS logs in Kafka
