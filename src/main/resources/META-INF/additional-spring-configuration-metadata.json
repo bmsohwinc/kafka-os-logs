@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "syslog.path",
+  "type": "java.lang.String",
+  "description": "A description for 'syslog.path'"
+}]}

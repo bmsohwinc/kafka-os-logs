@@ -5,9 +5,9 @@
     - [x] Check what additional data can be captured
     - [x] Observations recorded in **README.md** under *Project scope*
 
-- [ ] Phase 2: Capture OS logs in Java
+- [x] Phase 2: Capture OS logs in Java
     - [x] Check if File reading can be used to capture logs
-    - [ ] Check how to parse the logs
+    - [x] Check how to parse the logs
 
 - [ ] Phase 3: Store OS logs in Kafka
     - [ ] Create proto file

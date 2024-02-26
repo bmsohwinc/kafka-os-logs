@@ -15,7 +15,7 @@
     3. Number of processes started/activated at a given time
 6. The fields that we'll capture to enable the above analyses:
     1. Date and Time
-    2. Username
+    2. Host name
     3. Process name
     4. Process ID
     5. Service name
