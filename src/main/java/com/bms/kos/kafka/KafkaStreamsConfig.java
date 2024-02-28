@@ -1,6 +1,5 @@
 package com.bms.kos.kafka;
 
-import java.util.Arrays;
 import java.util.Properties;
 
 import org.apache.kafka.common.serialization.Serdes;

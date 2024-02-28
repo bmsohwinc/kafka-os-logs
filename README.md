@@ -32,6 +32,16 @@ OR
 $ ./runner.sh
 ```
 
+### Generate Protobuf class file
+1. Create the `osparsed.proto` file in resources/ directory
+2. Import necessary `google/*.proto` files in the `osparsed.proto` file (`import "google/protobuf/timestamp.proto";` in this case)
+3. Note down full path to the directory where `osparsed.proto` resides and the full path where the protoc's `include` directory resides
+4. Run the below commands
+```sh
+$ cd /path/to/protoc
+$ ./protoc -I /home/bms/my-proto/include -I /home/bms/projects/my-kafka/kos/src/main/resources/proto --java_out=/home/bms/projects/my-kafka/kos/src/main/java/ /home/bms/projects/my-kafka/kos/src/main/resources/proto/osparsed.proto
+```
+
 ### Kafka console consumer
 1. Read the records written to your kafka topic via the command:
 ```sh
@@ -48,3 +58,6 @@ $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA
 3. Saving Custom objects in [Kafka Topics](https://stackoverflow.com/questions/52450449/how-to-send-custom-object-to-kafka-topic-with-producer)
 4. Basics about [various log files](https://www.crowdstrike.com/cybersecurity-101/observability/log-file/)
 5. What all [we could do with System logs](https://www.linkedin.com/advice/0/what-some-techniques-analyzing-operating-system)
+6. Providing [correct paths](https://stackoverflow.com/a/56033787/9247555) for protobuf compilation
+7. [Compiling](https://protobuf.dev/getting-started/javatutorial/#compiling-protocol-buffers) protobuf files
+8. Properly [importing external or library proto files](https://stackoverflow.com/a/49092821/9247555) in main proto file

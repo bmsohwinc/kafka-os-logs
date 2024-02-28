@@ -1,0 +1,16 @@
+syntax="proto3";
+package bms;
+
+import "google/protobuf/timestamp.proto";
+
+
+option java_package = "com.bms.kos.kafka";
+option java_outer_classname = "KOSParsed";
+
+message KOSLogEntry {
+    string hostName = 1;
+    string processName = 2;
+    string processId = 3;
+    string serviceName = 4;
+    google.protobuf.Timestamp logDateTime = 5;
+}
