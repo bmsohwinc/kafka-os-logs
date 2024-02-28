@@ -12,7 +12,7 @@
 - [ ] Phase 3: Store OS logs in Kafka
     - [x] Setup producer for topic-1
     - [x] Store plain strings in topic-1
-    - [ ] Setup Kafka Stream to read from topic-1 and write to topic-2
+    - [x] Setup Kafka Stream to read from topic-1 and write to topic-2
     - [ ] Create proto file
 
 - [ ] Phase 4: Setup job to push to Kafka

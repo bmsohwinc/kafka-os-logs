@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bms.kos.service.KOSService;
+import com.bms.kos.service.KOSStreamsService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/kos")
@@ -15,6 +18,9 @@ public class KOSController {
 
     @Autowired
     private KOSService kosService;
+
+    @Autowired
+    private KOSStreamsService kosStreamsService;
 
     @GetMapping("/")
     public String hello() {
@@ -24,5 +30,15 @@ public class KOSController {
     @GetMapping("/start")
     public String start() throws IOException {
         return kosService.readSysLogs();
+    }
+
+    @GetMapping("/streams/start")
+    public String startKStreams() {
+        return kosStreamsService.startStreams();
+    }
+    
+    @GetMapping("/streams/stop")
+    public String stopKStreams() {
+        return kosStreamsService.stopStreams();
     }
 }
