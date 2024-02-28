@@ -10,8 +10,8 @@
     - [x] Check how to parse the logs
 
 - [ ] Phase 3: Store OS logs in Kafka
-    - [ ] Setup producer for topic-1
-    - [ ] Store plain strings in topic-1
+    - [x] Setup producer for topic-1
+    - [x] Store plain strings in topic-1
     - [ ] Setup Kafka Stream to read from topic-1 and write to topic-2
     - [ ] Create proto file
 

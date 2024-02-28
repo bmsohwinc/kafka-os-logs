@@ -21,10 +21,22 @@
     5. Service name
 
 
-## Run as
-1. `mvn package -DskipTests`
-2. `java -jar target/kos-0.0.1-SNAPSHOT.jar`
+## Commands
+### Run the code
+```sh
+$ mvn package -DskipTests
+$ java -jar target/kos-0.0.1-SNAPSHOT.jar
+```
+OR
+```sh
+$ ./runner.sh
+```
 
+### Kafka console consumer
+1. Read the records written to your kafka topic via the command:
+```sh
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA_TOPIC_NAME> --from-beginning
+```
 
 ## Tools
 1. Java Spring

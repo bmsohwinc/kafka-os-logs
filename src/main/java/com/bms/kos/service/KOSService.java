@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.bms.kos.domain.ParsedOSLogEntry;
+import com.bms.kos.kafka.KOSProducer;
 
 @Service
 public class KOSService {
@@ -18,28 +16,22 @@ public class KOSService {
     @Value("${syslog.path}")
     private String syslogPath;
 
-    public String readSysLogs() throws IOException {
-        List<ParsedOSLogEntry> parsedOSLogEntries = new ArrayList<>();
+    @Autowired
+    private KOSProducer kosProducer;
 
+    public String readSysLogs() throws IOException {
+        int numRecordsInserted = 0;
+        String kafkaReturnValue = null;
         try (InputStream iStream = getClass().getClassLoader().getResourceAsStream(syslogPath);
                 BufferedReader br = new BufferedReader(new InputStreamReader(iStream))) {
             String line;
             while ((line = br.readLine()) != null) {
-                // fileContent.append(line).append("\n");
-                if (LogSplitUtil.isDesiredString(line)) {
-                    parsedOSLogEntries.add(LogSplitUtil.parseRecordFromOSLogEntry(line));
-                }
+                kafkaReturnValue = kosProducer.sendMessage(line);
+                numRecordsInserted++;
             }
         }
-
-        System.out.println("No. of logs parsed: " + parsedOSLogEntries.size());
-        System.out.println("----------------------------");
-        parsedOSLogEntries.stream()
-                .limit(5)
-                .forEach(System.out::println);
-
-        System.out.println("----------------------------");
-        return "OK";
+        System.out.println("No. of logs inserted: " + numRecordsInserted);
+        return kafkaReturnValue;
     }
 
 }
