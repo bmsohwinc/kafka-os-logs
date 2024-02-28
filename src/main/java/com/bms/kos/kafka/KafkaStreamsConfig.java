@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.bms.kos.kafka.KOSParsed.KOSLogEntry;
+import com.bms.kos.service.LogSplitUtil;
+
 @Configuration
 public class KafkaStreamsConfig {
 
@@ -28,9 +31,15 @@ public class KafkaStreamsConfig {
 
         final StreamsBuilder builder = new StreamsBuilder();
 
+        // TODO: Setup Serdes for this protobuf type
+        // ChecK; https://stackoverflow.com/questions/65624650/kafka-streams-getting-issue-using-protobuf-serde
         KStream<String, String> source = builder.stream(kafkaTopicName);
-        source.mapValues(value -> "hello")
-            .to("streams-test-output-1");
+        source.mapValues(value -> (
+            LogSplitUtil.getKOSLogEntryFromParsedOSLogEntry(
+                LogSplitUtil.parseRecordFromOSLogEntry(value)
+                )
+            )
+        ).to("streams-test-output-1");
 
         final Topology topology = builder.build();
         KafkaStreams streams = new KafkaStreams(topology, props);

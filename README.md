@@ -61,3 +61,4 @@ $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA
 6. Providing [correct paths](https://stackoverflow.com/a/56033787/9247555) for protobuf compilation
 7. [Compiling](https://protobuf.dev/getting-started/javatutorial/#compiling-protocol-buffers) protobuf files
 8. Properly [importing external or library proto files](https://stackoverflow.com/a/49092821/9247555) in main proto file
+9. Converting [LocalDateTime to Protobuf Timestamp](https://stackoverflow.com/a/66162818/9247555)

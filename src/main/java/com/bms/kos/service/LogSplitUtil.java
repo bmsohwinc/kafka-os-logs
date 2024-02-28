@@ -1,10 +1,14 @@
 package com.bms.kos.service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 import com.bms.kos.domain.ParsedOSLogEntry;
+import com.bms.kos.kafka.KOSParsed.KOSLogEntry;
+import com.google.protobuf.Timestamp;
 
 public final class LogSplitUtil {
 
@@ -54,6 +58,32 @@ public final class LogSplitUtil {
         parsedOSLogEntry.setServiceName(getServiceName(splitLogTokens));
 
         return parsedOSLogEntry;
+    }
+
+    public static KOSLogEntry getKOSLogEntryFromParsedOSLogEntry(ParsedOSLogEntry parsedOSLogEntry) {
+        
+        Timestamp logDateTime = getProtobufTimestampFromLocalDateTime(parsedOSLogEntry.getLogDateTime());
+
+        KOSLogEntry kosLogEntry = KOSLogEntry.newBuilder()
+                .setHostName(parsedOSLogEntry.getHostName())
+                .setProcessName(parsedOSLogEntry.getProcessName())
+                .setProcessId(parsedOSLogEntry.getProcessId())
+                .setServiceName(parsedOSLogEntry.getServiceName())
+                .setLogDateTime(logDateTime)
+                .build();
+
+        return kosLogEntry;
+    }
+
+    public static Timestamp getProtobufTimestampFromLocalDateTime(LocalDateTime localDateTime) {
+        Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
+
+        Timestamp timestamp = Timestamp.newBuilder()
+                .setSeconds(instant.getEpochSecond())
+                .setNanos(instant.getNano())
+                .build();
+
+        return timestamp;
     }
 
     private static LocalDateTime getDateTime(String[] tokens) {

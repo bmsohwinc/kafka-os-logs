@@ -13,7 +13,8 @@
     - [x] Setup producer for topic-1
     - [x] Store plain strings in topic-1
     - [x] Setup Kafka Stream to read from topic-1 and write to topic-2
-    - [ ] Create proto file
+    - [x] Create proto file
+    - [ ] Write in protobuf format to topic-2
 
 - [ ] Phase 4: Setup job to push to Kafka
     - [ ] Check how to periodically push logs to Kafka
