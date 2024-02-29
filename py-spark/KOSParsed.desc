@@ -1,0 +1,16 @@
+
+ÿ
+google/protobuf/timestamp.protogoogle.protobuf";
+	Timestamp
+seconds (Rseconds
+nanos (RnanosB…
+com.google.protobufBTimestampProtoPZ2google.golang.org/protobuf/types/known/timestamppbø¢GPBªGoogle.Protobuf.WellKnownTypesbproto3
+ª
+osparsed.protobmsgoogle/protobuf/timestamp.proto"É
+KOSLogEntry
+hostName (	RhostName 
+processName (	RprocessName
+	processId (	R	processId 
+serviceName (	RserviceName<
+logDateTime (2.google.protobuf.TimestampRlogDateTimeB
+com.bms.kos.kafkaB	KOSParsedbproto3

@@ -34,3 +34,8 @@ build/
 
 ### Resources ###
 syslog
+
+### Virtual envs ###
+venv
+venv/
+

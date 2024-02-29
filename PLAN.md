@@ -26,9 +26,9 @@
     - [ ] Check how to schedule jobs with it
     - [ ] Test on this application
 
-- [ ] Phase 6: Process OS Kafka logs
-    - [ ] Check what metrics can be extracted from raw logs
-    - [ ] Check how to use Kafka Streams to generate the aggregates
+- ~~[ ] Phase 6: Process OS Kafka logs~~ (We used KStreams to process logs in **Phase 3**)
+    - ~~[ ] Check what metrics can be extracted from raw logs~~
+    - ~~[ ] Check how to use Kafka Streams to generate the aggregates~~
 
 - [ ] Phase 7: Store OS Kafka logs in SQL
     - [ ] Setup consumer to listen to processed topic

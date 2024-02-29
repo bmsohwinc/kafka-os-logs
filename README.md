@@ -42,6 +42,18 @@ $ cd /path/to/protoc
 $ ./protoc -I /home/bms/my-proto/include -I /home/bms/projects/my-kafka/kos/src/main/resources/proto --java_out=/home/bms/projects/my-kafka/kos/src/main/java/ /home/bms/projects/my-kafka/kos/src/main/resources/proto/osparsed.proto
 ```
 
+### Generate Protobuf Descriptor class file
+1. Run the below commands (do not forget the `include_imports` flag, else dependencies won't be added to the descriptor)
+```sh
+$ ./protoc --include_imports -I /home/bms/my-proto/include -I /home/bms/projects/my-kafka/kos/src/main/resources/proto --descriptor_set_out=py-spark/KOSParsed.desc /home/bms/projects/my-kafka/kos/src/main/resources/proto/osparsed.proto
+```
+
+### Running PySpark to stream Protobuf records from Kafka
+1. Run the below commands (do not forget the `packages` flag)
+```sh
+$ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --packages "org.apache.spark:spark-protobuf_2.12:3.5.0","org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0" --master local[4] KStreamApp.py 
+```
+
 ### Kafka console consumer
 1. Read the records written to your kafka topic via the command:
 ```sh
@@ -66,3 +78,7 @@ $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA
 11. Writing [Serializer and Deserializer for Protobuf classes](https://github.com/zuowang/kafka-protobuf/tree/master/src/main/java/kafka/serializer)
 12. Serdes is just a combination of a serializer and a deserializer. You have to implement all 3 (Serializer, Deserializer, and Serdes) to use it in the Producer/Consumer/Streams
 13. You can provide `custom Serdes` using `Consumed` and `Produced` classes in the `KStreams source` and `sink`, respectively
+14. Reading [Kafka records from Spark](https://stackoverflow.com/a/41492614/9247555) using writeStream.start() and .awaitTermination()
+15. Include necessary [protobuf](https://spark.apache.org/docs/latest/sql-data-sources-protobuf.html#deploying) and [kafka](https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#deploying) packages in spark-submit command line
+16. Creating [Protobuf descriptor files](https://docs.streamsets.com/portal/platform-datacollector/latest/datacollector/UserGuide/Data_Formats/Protobuf-Prerequisites.html)
+17. Good article on [spark streaming with kafka](https://subhamkharwal.medium.com/pyspark-structured-streaming-read-from-kafka-64c40767155f)
