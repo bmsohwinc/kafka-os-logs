@@ -8,11 +8,13 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.apache.kafka.streams.kstream.KStream;
+import org.apache.kafka.streams.kstream.Produced;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.bms.kos.kafka.KOSParsed.KOSLogEntry;
+import com.bms.kos.kafka.serdes.KOSSerdes;
 import com.bms.kos.service.LogSplitUtil;
 
 @Configuration
@@ -32,14 +34,13 @@ public class KafkaStreamsConfig {
         final StreamsBuilder builder = new StreamsBuilder();
 
         // TODO: Setup Serdes for this protobuf type
-        // ChecK; https://stackoverflow.com/questions/65624650/kafka-streams-getting-issue-using-protobuf-serde
+        // ChecK;
+        // https://stackoverflow.com/questions/65624650/kafka-streams-getting-issue-using-protobuf-serde
         KStream<String, String> source = builder.stream(kafkaTopicName);
-        source.mapValues(value -> (
-            LogSplitUtil.getKOSLogEntryFromParsedOSLogEntry(
-                LogSplitUtil.parseRecordFromOSLogEntry(value)
-                )
-            )
-        ).to("streams-test-output-1");
+        source.filter((key, value) -> LogSplitUtil.isDesiredString(value))
+                .mapValues(value -> (LogSplitUtil.getKOSLogEntryFromParsedOSLogEntry(
+                        LogSplitUtil.parseRecordFromOSLogEntry(value))))
+                .to("streams-test-output-2", Produced.valueSerde(KOSSerdes.KOSLogEntry()));
 
         final Topology topology = builder.build();
         KafkaStreams streams = new KafkaStreams(topology, props);

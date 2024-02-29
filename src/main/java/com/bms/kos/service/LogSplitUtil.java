@@ -6,17 +6,26 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.bms.kos.domain.ParsedOSLogEntry;
 import com.bms.kos.kafka.KOSParsed.KOSLogEntry;
 import com.google.protobuf.Timestamp;
 
 public final class LogSplitUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(LogSplitUtil.class);
+
     public static final String SUCCESSFULLY_ACTIVATED_SERVICE = "Successfully activated service";
 
     public static final String STARTED_SERVICE = "Started";
 
     public static final String DELIMITER_WHITESPACE = " ";
+
+    public static final String DEFAULT_PROCESS_NAME = "DEFAULT_PROCESS_NAME";
+
+    public static final String DEFAULT_PROCESS_ID = "DEFAULT_PROCESS_ID";
 
     private LogSplitUtil() {
     }
@@ -49,10 +58,14 @@ public final class LogSplitUtil {
         String[] processNameWithIdTokens = processNameWithId.split("\\[|\\]");
         if (processNameWithIdTokens.length > 0) {
             parsedOSLogEntry.setProcessName(processNameWithIdTokens[0]);
+        } else {
+            parsedOSLogEntry.setProcessName(DEFAULT_PROCESS_NAME);
         }
 
         if (processNameWithIdTokens.length > 1) {
             parsedOSLogEntry.setProcessId(processNameWithIdTokens[1]);
+        } else {
+            parsedOSLogEntry.setProcessId(DEFAULT_PROCESS_ID);
         }
 
         parsedOSLogEntry.setServiceName(getServiceName(splitLogTokens));
@@ -63,6 +76,8 @@ public final class LogSplitUtil {
     public static KOSLogEntry getKOSLogEntryFromParsedOSLogEntry(ParsedOSLogEntry parsedOSLogEntry) {
         
         Timestamp logDateTime = getProtobufTimestampFromLocalDateTime(parsedOSLogEntry.getLogDateTime());
+
+        LOG.info("Record to be protobuffed: {}", parsedOSLogEntry);
 
         KOSLogEntry kosLogEntry = KOSLogEntry.newBuilder()
                 .setHostName(parsedOSLogEntry.getHostName())

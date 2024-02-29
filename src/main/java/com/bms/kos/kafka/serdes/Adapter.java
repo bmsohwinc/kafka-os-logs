@@ -1,4 +1,4 @@
-package com.bms.kos.kafka.serializer;
+package com.bms.kos.kafka.serdes;
 
 import java.util.Map;
 

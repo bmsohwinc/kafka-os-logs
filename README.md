@@ -62,3 +62,7 @@ $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA
 7. [Compiling](https://protobuf.dev/getting-started/javatutorial/#compiling-protocol-buffers) protobuf files
 8. Properly [importing external or library proto files](https://stackoverflow.com/a/49092821/9247555) in main proto file
 9. Converting [LocalDateTime to Protobuf Timestamp](https://stackoverflow.com/a/66162818/9247555)
+10. Writing [custom Serdes](https://medium.com/@agvillamizar/implementing-custom-serdes-for-java-objects-using-json-serializer-and-deserializer-in-kafka-streams-d794b66e7c03)
+11. Writing [Serializer and Deserializer for Protobuf classes](https://github.com/zuowang/kafka-protobuf/tree/master/src/main/java/kafka/serializer)
+12. Serdes is just a combination of a serializer and a deserializer. You have to implement all 3 (Serializer, Deserializer, and Serdes) to use it in the Producer/Consumer/Streams
+13. You can provide `custom Serdes` using `Consumed` and `Produced` classes in the `KStreams source` and `sink`, respectively

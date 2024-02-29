@@ -9,12 +9,12 @@
     - [x] Check if File reading can be used to capture logs
     - [x] Check how to parse the logs
 
-- [ ] Phase 3: Store OS logs in Kafka
+- [x] Phase 3: Store OS logs in Kafka
     - [x] Setup producer for topic-1
     - [x] Store plain strings in topic-1
     - [x] Setup Kafka Stream to read from topic-1 and write to topic-2
     - [x] Create proto file
-    - [ ] Write in protobuf format to topic-2
+    - [x] Write in protobuf format to topic-2
 
 - [ ] Phase 4: Setup job to push to Kafka
     - [ ] Check how to periodically push logs to Kafka
