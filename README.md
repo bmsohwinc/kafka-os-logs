@@ -60,6 +60,50 @@ $ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --package
 $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA_TOPIC_NAME> --from-beginning
 ```
 
+### Running the full application for a quick test
+1. Start Zookeeper and Kafka main
+```sh
+$ cd /kafka/directory
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+$ bin/kafka-server-start.sh config/server.properties
+```
+2. Open Kafka console producer for topic-1
+```sh
+$ cd /kafka/directory
+$ bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic kos_raw_os_log
+```
+3. Open Kafka console consumer for topic-1
+```sh
+$ cd /kafka/directory
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kos_raw_os_log --from-beginning
+```
+4. Open Kafka console consumer for topic-2
+```sh
+$ cd /kafka/directory
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic streams-test-output-2 --from-beginning
+```
+5. Start KOSApplication
+```sh
+$ cd /project/directory
+$ ./runner.sh
+```
+6. Start Kafka Streams
+```sh
+$ curl http://localhost:8080/kos/streams/start
+```
+7. Start PySpark Application
+```sh
+$ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --packages "org.apache.spark:spark-protobuf_2.12:3.5.0","org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0" --master local[4] KStreamApp.py 
+```
+8. Write to Kafka producer of topic-1
+```sh
+> Feb 24 20:29:42 dell-Inspiron-15-3567 systemd[1]: Started Locale Service.
+```
+9. Check that records are logged onto:
+    1. Topic-1 Console Consumer
+    2. Topic-2 Console Consumer
+    3. PySpark Console
+
 ## Tools
 1. Java Spring
 2. Spring Kafka
