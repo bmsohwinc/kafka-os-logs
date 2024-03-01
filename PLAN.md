@@ -30,9 +30,9 @@
     - ~~[ ] Check what metrics can be extracted from raw logs~~
     - ~~[ ] Check how to use Kafka Streams to generate the aggregates~~
 
-- [ ] Phase 7: Store OS Kafka logs in SQL
-    - [ ] Setup consumer to listen to processed topic
-    - [ ] Store the processed logs into an SQL table
+- [x] Phase 7: Store OS Kafka logs in SQL
+    - [x] Setup consumer to listen to processed topic
+    - [x] Store the processed logs into an SQL table
 
 - [ ] Phase 8: Read OS SQL logs with Spark
     - [ ] Check how to setup Spark with SQL

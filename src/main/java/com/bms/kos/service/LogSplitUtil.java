@@ -74,7 +74,7 @@ public final class LogSplitUtil {
     }
 
     public static KOSLogEntry getKOSLogEntryFromParsedOSLogEntry(ParsedOSLogEntry parsedOSLogEntry) {
-        
+
         Timestamp logDateTime = getProtobufTimestampFromLocalDateTime(parsedOSLogEntry.getLogDateTime());
 
         LOG.info("Record to be protobuffed: {}", parsedOSLogEntry);
@@ -90,6 +90,17 @@ public final class LogSplitUtil {
         return kosLogEntry;
     }
 
+    public static ParsedOSLogEntry getParsedOSLogEntryFromKOSLogEntry(KOSLogEntry kosLogEntry) {
+        ParsedOSLogEntry parsedOSLogEntry = new ParsedOSLogEntry();
+        parsedOSLogEntry.setHostName(kosLogEntry.getHostName());
+        parsedOSLogEntry.setProcessId(kosLogEntry.getProcessId());
+        parsedOSLogEntry.setProcessName(kosLogEntry.getProcessName());
+        parsedOSLogEntry.setServiceName(kosLogEntry.getServiceName());
+
+        parsedOSLogEntry.setLogDateTime(getLocalDateTimeFromProtobufTimestamp(kosLogEntry.getLogDateTime()));
+        return parsedOSLogEntry;
+    }
+
     public static Timestamp getProtobufTimestampFromLocalDateTime(LocalDateTime localDateTime) {
         Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
 
@@ -99,6 +110,13 @@ public final class LogSplitUtil {
                 .build();
 
         return timestamp;
+    }
+
+    public static LocalDateTime getLocalDateTimeFromProtobufTimestamp(Timestamp timestamp) {
+        LocalDateTime localDateTime = Instant.ofEpochSecond(timestamp.getSeconds())
+                .atZone(ZoneOffset.UTC)
+                .toLocalDateTime();
+        return localDateTime;
     }
 
     private static LocalDateTime getDateTime(String[] tokens) {
