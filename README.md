@@ -126,3 +126,6 @@ $ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --package
 15. Include necessary [protobuf](https://spark.apache.org/docs/latest/sql-data-sources-protobuf.html#deploying) and [kafka](https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#deploying) packages in spark-submit command line
 16. Creating [Protobuf descriptor files](https://docs.streamsets.com/portal/platform-datacollector/latest/datacollector/UserGuide/Data_Formats/Protobuf-Prerequisites.html)
 17. Good article on [spark streaming with kafka](https://subhamkharwal.medium.com/pyspark-structured-streaming-read-from-kafka-64c40767155f)
+18. Creating a simple [Spring JPA](https://medium.com/@khairmuhammadmemon/spring-boot-data-access-with-spring-data-jpa-and-mysql-afe90e28b05d) project with MySQL
+19. Configuring [Kafka consumer](https://www.youtube.com/watch?v=d0T9g0_G_3U)
+20. [Starting MySQL service](https://stackoverflow.com/a/23485424/9247555) if down or cannot connect

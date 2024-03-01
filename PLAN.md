@@ -34,11 +34,11 @@
     - [x] Setup consumer to listen to processed topic
     - [x] Store the processed logs into an SQL table
 
-- [ ] Phase 8: Read OS SQL logs with Spark
-    - [ ] Check how to setup Spark with SQL
-    - [ ] Check basic syntax
-    - [ ] Check what visualizaions can be derived
-    - [ ] Check how to setup a dashboard (if possible)
+- [x] Phase 8: Read OS SQL logs with Spark
+    - [x] Check how to setup Spark with SQL
+    - [x] Check basic syntax
+    - [x] Check what visualizaions can be derived
+    - ~~[ ] Check how to setup a dashboard (if possible)~~
 
 - [ ] Phase 9: Run entire system and make video/gif
 
