@@ -23,6 +23,9 @@ public class KafkaStreamsConfig {
     @Value("${kafka.topic.name.raw.os.logs}")
     private String kafkaTopicName;
 
+    @Value("${kafka.topic.name.streams.proto.logs}")
+    private String kafkaStreamsTopicName;
+
     @Bean
     public KafkaStreams getKafkaStreamsInstance() {
         Properties props = new Properties();
@@ -32,15 +35,11 @@ public class KafkaStreamsConfig {
         props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
         final StreamsBuilder builder = new StreamsBuilder();
-
-        // TODO: Setup Serdes for this protobuf type
-        // ChecK;
-        // https://stackoverflow.com/questions/65624650/kafka-streams-getting-issue-using-protobuf-serde
         KStream<String, String> source = builder.stream(kafkaTopicName);
         source.filter((key, value) -> LogSplitUtil.isDesiredString(value))
                 .mapValues(value -> (LogSplitUtil.getKOSLogEntryFromParsedOSLogEntry(
                         LogSplitUtil.parseRecordFromOSLogEntry(value))))
-                .to("streams-test-output-2", Produced.valueSerde(KOSSerdes.KOSLogEntry()));
+                .to(kafkaStreamsTopicName, Produced.valueSerde(KOSSerdes.KOSLogEntry()));
 
         final Topology topology = builder.build();
         KafkaStreams streams = new KafkaStreams(topology, props);

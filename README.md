@@ -20,6 +20,14 @@
     4. Process ID
     5. Service name
 
+## Project design overview
+1. An `Apache Airflow` instance periodically triggers the `Kafka Streams` and `Kafka Producer` instances
+2. An `Apache Kafka Producer` instance pulls data from `/var/sys/log` to read OS process logs, writes it to Kafka Topic 1
+3. An `Apache Kafka Streams` instance pulls data from Kafka Topic 1, converts into `Protobuf` format, and writes it to Kafka Topic 2
+4. An `Apache Kafka Consumer` instance pulls data from Kafka Topic 2, convert into Java POJO, and saves into a `MySQL table` via `JPA Hibernate`
+5. An `Apache Spark` instance puls data from the MySQL table, computes metrics, and produces visualizations
+
+![KOS System Design Image](https://github.com/bmsohwinc/kafka-os-logs/blob/master/images/kos.drawio.png "KOS System Design")
 
 ## Commands
 ### Start MySQL instance
@@ -82,12 +90,12 @@ $ bin/kafka-server-start.sh config/server.properties
 2. Open Kafka console producer for topic-1
 ```sh
 $ cd /kafka/directory
-$ bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic kos_raw_os_log
+$ bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic kos-raw-os-log
 ```
 3. Open Kafka console consumer for topic-1
 ```sh
 $ cd /kafka/directory
-$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kos_raw_os_log --from-beginning
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kos-raw-os-log --from-beginning
 ```
 4. Open Kafka console consumer for topic-2
 ```sh
