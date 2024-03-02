@@ -1,4 +1,4 @@
-# Sync OS Process Logs into Kafka, process with Spark, and schedule with Airflow
+# KOS: Analyze OS Process Logs with a Kafka, Spark, and Airflow data pipeline
 
 ## Project goal
 Real-time analysis of OS Process logs through a data pipeline built using Apache Kafka, Spark, and Airflow
