@@ -95,6 +95,17 @@ mysql> select count(*) from parsedoslog_entry;
 $ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --packages "com.mysql:mysql-connector-j:8.3.0" --master local[4] KOSSparkApp.py
 ```
 
+## Future enhancements
+1. Read syslog file with an offset + limit
+    - Currently, entire file is read on every producer call
+    - This can be solved by reading from an API instead of plain file
+2. Display metrics in Dashboard
+    - Currently, metrics captured in Spark are logged in the console and saved as images
+    - Setting a React/Redux dashboard with Charts updating in real-time would streamline analysis
+3. Enrich log capture
+    - Currently, only the syslog entries are recorded
+    - This can be extended to provide a framework that can consume any log and provide visualizations
+    - It can also provide an interface that can be implemented by developers to write custom parsing code
 
 ## References
 1. Downloading ProtoBuf Compiler [protoc](https://www.youtube.com/watch?v=46O73On0gyI)
