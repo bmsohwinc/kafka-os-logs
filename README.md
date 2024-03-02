@@ -27,7 +27,7 @@ Real-time analysis of OS Process logs through a data pipeline built using Apache
 2. An `Apache Kafka Producer` instance pulls data from `/var/sys/log` to read OS process logs, writes it to Kafka Topic 1
 3. An `Apache Kafka Streams` instance pulls data from Kafka Topic 1, converts into `Protobuf` format, and writes it to Kafka Topic 2
 4. An `Apache Kafka Consumer` instance pulls data from Kafka Topic 2, convert into Java POJO, and saves into a `MySQL table` via `JPA Hibernate`
-5. An `Apache Spark` instance puls data from the MySQL table, computes metrics, and produces visualizations
+5. An `Apache Spark` instance pulls data from the MySQL table, computes metrics, and produces visualizations
 
 ![KOS System Design Image](https://github.com/bmsohwinc/kafka-os-logs/blob/master/images/kos.drawio.png "KOS System Design")
 
