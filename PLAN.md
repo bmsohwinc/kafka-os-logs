@@ -16,15 +16,15 @@
     - [x] Create proto file
     - [x] Write in protobuf format to topic-2
 
-- [ ] Phase 4: Setup job to push to Kafka
-    - [ ] Check how to periodically push logs to Kafka
-    - [ ] Check how to handle faults
-    - [ ] Check how to prevent re-reads
+- [x] Phase 4: Setup job to push to Kafka
+    - [x] Check how to periodically push logs to Kafka
+    - [x] Check how to handle faults
+    - [x] Check how to prevent re-reads
 
-- [ ] Phase 5: Setup job using Airflow
-    - [ ] Explore Airflow
-    - [ ] Check how to schedule jobs with it
-    - [ ] Test on this application
+- [x] Phase 5: Setup job using Airflow
+    - [x] Explore Airflow
+    - [x] Check how to schedule jobs with it
+    - [x] Test on this application
 
 - ~~[ ] Phase 6: Process OS Kafka logs~~ (We used KStreams to process logs in **Phase 3**)
     - ~~[ ] Check what metrics can be extracted from raw logs~~
@@ -40,6 +40,6 @@
     - [x] Check what visualizaions can be derived
     - ~~[ ] Check how to setup a dashboard (if possible)~~
 
-- [ ] Phase 9: Run entire system and make video/gif
+- [x] Phase 9: Run entire system ~~and make video/gif~~
 
 - [ ] Phase 10: Refactor code, document, and commit

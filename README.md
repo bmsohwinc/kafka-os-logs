@@ -22,6 +22,11 @@
 
 
 ## Commands
+### Start MySQL instance
+```sh
+$ sudo service mysql start
+```
+
 ### Run the code
 ```sh
 $ mvn package -DskipTests
@@ -59,6 +64,13 @@ $ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --package
 ```sh
 $ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <KAFKA_TOPIC_NAME> --from-beginning
 ```
+
+### Setup Airflow DAGs
+1. Install Airflow as given in [Official doc](https://airflow.apache.org/docs/apache-airflow/stable/start.html)
+2. Create `~/airflow/dags` directory
+3. Copy the dag files from `airflow-dag` directory of this project to the above location
+4. Run `$ python *.dag` to submit the airflow configs
+5. Head over to the Airflow dashboard and enable the [jobs tagged](http://localhost:8080/home?status=all&tags=kos) with `kos`
 
 ### Running the full application for a quick test
 1. Start Zookeeper and Kafka main
