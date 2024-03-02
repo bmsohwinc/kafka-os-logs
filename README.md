@@ -1,5 +1,15 @@
 # KOS: Analyze OS Process Logs with a Kafka, Spark, and Airflow data pipeline
 
+## Table of Contents
+1. [Project goal](#project-goal)
+2. [Project scope](#project-scope)
+3. [Project design](#project-design)
+4. [Tech stack](#tech-stack)
+5. [Local setup](#local-setup)
+6. [Future enhancements](#future-enhancements)
+7. [References](#references)
+8. [Miscelleneous](#miscellaneous)
+
 ## Project goal
 Real-time analysis of OS Process logs through a data pipeline built using Apache Kafka, Spark, and Airflow
 
