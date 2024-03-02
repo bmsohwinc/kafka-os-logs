@@ -29,6 +29,17 @@
 
 ![KOS System Design Image](https://github.com/bmsohwinc/kafka-os-logs/blob/master/images/kos.drawio.png "KOS System Design")
 
+## Tech stack used
+1. Backend: **Java Spring**, **Spring Boot**
+2. Storage/Queue:
+    1. **Apache Kafka**
+    2. **MySQL Database**
+3. Big data processor:
+    1. **Apache Kafka Streams**
+    2. **Apache Spark (PySpark)**
+4. Scheduler: **Apache Airflow**
+5. Data format: **Protobuf**
+
 ## Commands
 ### Start MySQL instance
 ```sh
