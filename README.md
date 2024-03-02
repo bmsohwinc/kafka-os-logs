@@ -1,5 +1,7 @@
-# Syncs OS Process Logs into Kafka
+# Sync OS Process Logs into Kafka, process with Spark, and schedule with Airflow
 
+## Project goal
+Real-time analysis of OS Process logs through a data pipeline built using Apache Kafka, Spark, and Airflow
 
 ## Project scope
 1. The file `/var/log/syslog` captures all process logs
@@ -20,7 +22,7 @@
     4. Process ID
     5. Service name
 
-## Project design overview
+## Project design
 1. An `Apache Airflow` instance periodically triggers the `Kafka Streams` and `Kafka Producer` instances
 2. An `Apache Kafka Producer` instance pulls data from `/var/sys/log` to read OS process logs, writes it to Kafka Topic 1
 3. An `Apache Kafka Streams` instance pulls data from Kafka Topic 1, converts into `Protobuf` format, and writes it to Kafka Topic 2
@@ -29,16 +31,97 @@
 
 ![KOS System Design Image](https://github.com/bmsohwinc/kafka-os-logs/blob/master/images/kos.drawio.png "KOS System Design")
 
-## Tech stack used
-1. Backend: **Java Spring**, **Spring Boot**
+## Tech stack
+1. Backend: **[Java Spring](https://spring.io/)**, **[Spring Boot](https://spring.io/projects/spring-boot)**
 2. Storage/Queue:
-    1. **Apache Kafka**
-    2. **MySQL Database**
+    1. **[Apache Kafka](https://kafka.apache.org/)**
+    2. **[MySQL Database](https://www.mysql.com/)**
 3. Big data processor:
-    1. **Apache Kafka Streams**
-    2. **Apache Spark (PySpark)**
-4. Scheduler: **Apache Airflow**
-5. Data format: **Protobuf**
+    1. **[Apache Kafka Streams](https://kafka.apache.org/37/documentation/streams/)**
+    2. **[Apache Spark (PySpark)](https://spark.apache.org/)**
+4. Scheduler: **[Apache Airflow](https://airflow.apache.org/)**
+5. Data format: **[Protobuf](https://protobuf.dev/)**
+6. Others:
+    1. Storage access tool: **[Spring JPA](https://spring.io/guides/gs/accessing-data-mysql)**
+    2. Data visualization: **[Pandas](https://pandas.pydata.org/)**, **[Seaborn](https://seaborn.pydata.org/)**, **[Matplotlib](https://matplotlib.org/)**
+
+## Local setup
+### Step 0: Download softwares
+1. Apache Kafka
+2. Apache Spark
+3. Apache Airflow
+4. MySQL Database
+5. Python 3.10 and Java 17
+6. This git repository
+```sh
+$ git clone https://github.com/bmsohwinc/kafka-os-logs.git
+```
+
+### Step 1: Start Zookeeper and Apache Kafka
+```sh
+$ cd /kafka/directory
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+$ bin/kafka-server-start.sh config/server.properties
+```
+### Step 2: Start MySQL database
+```sh
+$ sudo service mysql start
+```
+### Step 3: Update file path and mysql passwords in application.properties
+```sh
+syslog.path=/var/sys/log # in case this is different, only then update this prop
+spring.datasource.password=your_mysql_password
+```
+### Step 4: Start the application
+```sh
+$ ./runner.sh
+```
+### Step 5: Setup Apache Airflow
+1. Create `~/airflow/dags` directory
+2. Copy the dag files from `airflow-dag` directory of this project to the above location
+3. Run `$ python *.dag` to submit the airflow configs
+4. Head over to the Airflow dashboard and enable the [jobs tagged](http://localhost:8080/home?status=all&tags=kos) with `kos`
+### Step 6: Verify logs are stored in Kafka Topic 2
+```sh
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic kos-streams-proto-log --from-beginning
+```
+### Step 7: Verify logs are processed and stored in MySQL database
+```sh
+mysql> use kos;
+mysql> select count(*) from parsedoslog_entry;
+```
+### Step 8: Log and plot metrics with Apache Spark
+```sh
+$ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --packages "com.mysql:mysql-connector-j:8.3.0" --master local[4] KOSSparkApp.py
+```
+
+
+## References
+1. Downloading ProtoBuf Compiler [protoc](https://www.youtube.com/watch?v=46O73On0gyI)
+2. Populating Repeated fields in [Protobuf class](https://stackoverflow.com/questions/29170183/how-to-set-repeated-fields-in-protobuf-before-building-the-message)
+3. Saving Custom objects in [Kafka Topics](https://stackoverflow.com/questions/52450449/how-to-send-custom-object-to-kafka-topic-with-producer)
+4. Basics about [various log files](https://www.crowdstrike.com/cybersecurity-101/observability/log-file/)
+5. What all [we could do with System logs](https://www.linkedin.com/advice/0/what-some-techniques-analyzing-operating-system)
+6. Providing [correct paths](https://stackoverflow.com/a/56033787/9247555) for protobuf compilation
+7. [Compiling](https://protobuf.dev/getting-started/javatutorial/#compiling-protocol-buffers) protobuf files
+8. Properly [importing external or library proto files](https://stackoverflow.com/a/49092821/9247555) in main proto file
+9. Converting [LocalDateTime to Protobuf Timestamp](https://stackoverflow.com/a/66162818/9247555)
+10. Writing [custom Serdes](https://medium.com/@agvillamizar/implementing-custom-serdes-for-java-objects-using-json-serializer-and-deserializer-in-kafka-streams-d794b66e7c03)
+11. Writing [Serializer and Deserializer for Protobuf classes](https://github.com/zuowang/kafka-protobuf/tree/master/src/main/java/kafka/serializer)
+12. Serdes is just a combination of a serializer and a deserializer. You have to implement all 3 (Serializer, Deserializer, and Serdes) to use it in the Producer/Consumer/Streams
+13. You can provide `custom Serdes` using `Consumed` and `Produced` classes in the `KStreams source` and `sink`, respectively
+14. Reading [Kafka records from Spark](https://stackoverflow.com/a/41492614/9247555) using writeStream.start() and .awaitTermination()
+15. Include necessary [protobuf](https://spark.apache.org/docs/latest/sql-data-sources-protobuf.html#deploying) and [kafka](https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#deploying) packages in spark-submit command line
+16. Creating [Protobuf descriptor files](https://docs.streamsets.com/portal/platform-datacollector/latest/datacollector/UserGuide/Data_Formats/Protobuf-Prerequisites.html)
+17. Good article on [spark streaming with kafka](https://subhamkharwal.medium.com/pyspark-structured-streaming-read-from-kafka-64c40767155f)
+18. Creating a simple [Spring JPA](https://medium.com/@khairmuhammadmemon/spring-boot-data-access-with-spring-data-jpa-and-mysql-afe90e28b05d) project with MySQL
+19. Configuring [Kafka consumer](https://www.youtube.com/watch?v=d0T9g0_G_3U)
+20. [Starting MySQL service](https://stackoverflow.com/a/23485424/9247555) if down or cannot connect
+
+
+## Miscellaneous
+<details>
+ <summary>Click to expand other commands used during dev work</summary>
 
 ## Commands
 ### Start MySQL instance
@@ -139,24 +222,4 @@ $ /home/bms/projects/my-spark/spark-3.5.0-bin-hadoop3/bin/spark-submit --package
 1. Java Spring
 2. Spring Kafka
 
-## References
-1. Downloading ProtoBuf Compiler [protoc](https://www.youtube.com/watch?v=46O73On0gyI)
-2. Populating Repeated fields in [Protobuf class](https://stackoverflow.com/questions/29170183/how-to-set-repeated-fields-in-protobuf-before-building-the-message)
-3. Saving Custom objects in [Kafka Topics](https://stackoverflow.com/questions/52450449/how-to-send-custom-object-to-kafka-topic-with-producer)
-4. Basics about [various log files](https://www.crowdstrike.com/cybersecurity-101/observability/log-file/)
-5. What all [we could do with System logs](https://www.linkedin.com/advice/0/what-some-techniques-analyzing-operating-system)
-6. Providing [correct paths](https://stackoverflow.com/a/56033787/9247555) for protobuf compilation
-7. [Compiling](https://protobuf.dev/getting-started/javatutorial/#compiling-protocol-buffers) protobuf files
-8. Properly [importing external or library proto files](https://stackoverflow.com/a/49092821/9247555) in main proto file
-9. Converting [LocalDateTime to Protobuf Timestamp](https://stackoverflow.com/a/66162818/9247555)
-10. Writing [custom Serdes](https://medium.com/@agvillamizar/implementing-custom-serdes-for-java-objects-using-json-serializer-and-deserializer-in-kafka-streams-d794b66e7c03)
-11. Writing [Serializer and Deserializer for Protobuf classes](https://github.com/zuowang/kafka-protobuf/tree/master/src/main/java/kafka/serializer)
-12. Serdes is just a combination of a serializer and a deserializer. You have to implement all 3 (Serializer, Deserializer, and Serdes) to use it in the Producer/Consumer/Streams
-13. You can provide `custom Serdes` using `Consumed` and `Produced` classes in the `KStreams source` and `sink`, respectively
-14. Reading [Kafka records from Spark](https://stackoverflow.com/a/41492614/9247555) using writeStream.start() and .awaitTermination()
-15. Include necessary [protobuf](https://spark.apache.org/docs/latest/sql-data-sources-protobuf.html#deploying) and [kafka](https://spark.apache.org/docs/latest/structured-streaming-kafka-integration.html#deploying) packages in spark-submit command line
-16. Creating [Protobuf descriptor files](https://docs.streamsets.com/portal/platform-datacollector/latest/datacollector/UserGuide/Data_Formats/Protobuf-Prerequisites.html)
-17. Good article on [spark streaming with kafka](https://subhamkharwal.medium.com/pyspark-structured-streaming-read-from-kafka-64c40767155f)
-18. Creating a simple [Spring JPA](https://medium.com/@khairmuhammadmemon/spring-boot-data-access-with-spring-data-jpa-and-mysql-afe90e28b05d) project with MySQL
-19. Configuring [Kafka consumer](https://www.youtube.com/watch?v=d0T9g0_G_3U)
-20. [Starting MySQL service](https://stackoverflow.com/a/23485424/9247555) if down or cannot connect
+</details>

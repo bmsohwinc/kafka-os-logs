@@ -42,4 +42,4 @@
 
 - [x] Phase 9: Run entire system ~~and make video/gif~~
 
-- [ ] Phase 10: Refactor code, document, and commit
+- [x] Phase 10: Refactor code, document, and commit
